@@ -1,0 +1,31 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace ConsoleApp4
+{
+    class ThreadingAsyncAwait
+    {
+        static void Main(string[] args)
+        {
+            var xyz = AsyncAwaitMethodExecution();
+            Console.ReadKey();
+        }
+
+        private static async Task AsyncAwaitMethodExecution()
+        {
+            HttpClient client = new HttpClient();
+            Task<string> getStringTask = client.GetStringAsync("http://msdn.microsoft.com");
+            DoIndependentTask();
+            string url = await getStringTask;
+        }
+
+        private static void DoIndependentTask()
+        {
+            Console.WriteLine("Inside Independent task");
+        }
+    }
+}
+
+//   A method can return async Task, Task, or void. It is advised to return void only when necessary since the Tasks are awaitable,
+//   while void is not. For example, using async void in an Event Handler is not awaitable.
